@@ -1,5 +1,6 @@
 package cn.vorbote.smartcampus.pos;
 
+import cn.vorbote.simplejwt.annotations.JwtIgnore;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
@@ -31,6 +32,7 @@ public final class Admin extends BasePo implements Serializable {
 
     private Integer gender;
 
+    @JwtIgnore
     private String password;
 
     private String email;
