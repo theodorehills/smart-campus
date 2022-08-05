@@ -8,3 +8,23 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
   mapper-locations: classpath*:/mappers/**/*.xml
+  global-config:
+    db-config:
+      logic-delete-field: archived
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+vorbote:
+  web-dev:
+    jwt:
+      enabled: true
+      secret: secret
+      issuer: vorbote
+      algorithm: hs256
+    cors:
+      enabled: true
+      allow-headers: [Content-Type, Authorization]
+      allow-credentials: true
+      allow-origin: '*'
+      allow-methods: [GET, POST, PUT, DELETE, OPTIONS]
+      expose-headers: [Authorization]
