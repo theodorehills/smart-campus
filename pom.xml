@@ -18,6 +18,7 @@
 
         <mybatis.plus.version>3.5.2</mybatis.plus.version>
         <mysql.version>5.1.49</mysql.version>
+        <mapstruct.version>1.5.2.Final</mapstruct.version>
     </properties>
     <dependencies>
 
@@ -41,7 +42,7 @@
         <dependency>
             <groupId>cn.vorbote</groupId>
             <artifactId>webdev-spring-boot-starter</artifactId>
-            <version>3.4.0</version>
+            <version>3.4.1</version>
         </dependency>
 
         <dependency>
@@ -66,7 +67,14 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>1.5.2.Final</version>
+            <version>${mapstruct.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
