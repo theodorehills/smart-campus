@@ -4,6 +4,7 @@ import cn.vorbote.core.constants.Hash;
 import cn.vorbote.core.time.TimeSpan;
 import cn.vorbote.core.utils.HashUtil;
 import cn.vorbote.simplejwt.AccessKeyUtil;
+import cn.vorbote.smartcampus.constants.HeaderConstants;
 import cn.vorbote.smartcampus.converters.AdminConverter;
 import cn.vorbote.smartcampus.dtos.AdminDto;
 import cn.vorbote.smartcampus.enums.ErrorStatus;
@@ -65,7 +66,7 @@ public class AdminController {
                     "管理员", new String[]{admin.getId()},
                     admin);
 
-            response.setHeader("Authorization", token);
+            response.setHeader(HeaderConstants.TOKEN_KEY, token);
 
             return ResponseResult.success(adminConverter.toView(admin), "登录成功！");
         } else {
