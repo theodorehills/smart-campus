@@ -6,5 +6,8 @@ package cn.vorbote.smartcampus.vos;
  *
  * @author theod
  */
-public abstract class BaseVo {
+public sealed abstract class BaseVo permits AdminVo, GradeVo, KlasseVo, StudentVo, TeacherVo {
+
+    protected String id;
+
 }
