@@ -12,7 +12,7 @@ import org.mapstruct.Mapper;
  * @author theod
  */
 @Mapper(componentModel = "spring")
-public interface AdminConverter extends BaseConverter<AdminDto, Admin, AdminVo> {
+public abstract class AdminConverter implements BaseConverter<AdminDto, Admin, AdminVo> {
 
     /**
      * Convert a Data Transform Object to Plain Object.
@@ -21,7 +21,7 @@ public interface AdminConverter extends BaseConverter<AdminDto, Admin, AdminVo> 
      * @return Plain Object
      */
     @Override
-    Admin toPlain(AdminDto dto);
+    public abstract Admin toPlain(AdminDto dto);
 
     /**
      * Convert a Plain Object to View Object.
@@ -30,5 +30,5 @@ public interface AdminConverter extends BaseConverter<AdminDto, Admin, AdminVo> 
      * @return View Object
      */
     @Override
-    AdminVo toView(Admin po);
+    public abstract AdminVo toView(Admin po);
 }

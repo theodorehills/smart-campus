@@ -15,7 +15,7 @@ import org.mapstruct.Mapper;
  * @author theod
  */
 @Mapper(componentModel = "spring")
-public interface KlasseConverter extends BaseConverter<KlasseDto, Klasse, KlasseVo> {
+public abstract class KlasseConverter implements BaseConverter<KlasseDto, Klasse, KlasseVo> {
 
     /**
      * Convert a Data Transform Object to Plain Object.
@@ -24,7 +24,7 @@ public interface KlasseConverter extends BaseConverter<KlasseDto, Klasse, Klasse
      * @return Plain Object
      */
     @Override
-    Klasse toPlain(KlasseDto dto);
+    public abstract Klasse toPlain(KlasseDto dto);
 
     /**
      * Convert a Plain Object to View Object.
@@ -33,5 +33,5 @@ public interface KlasseConverter extends BaseConverter<KlasseDto, Klasse, Klasse
      * @return View Object
      */
     @Override
-    KlasseVo toView(Klasse po);
+    public abstract KlasseVo toView(Klasse po);
 }

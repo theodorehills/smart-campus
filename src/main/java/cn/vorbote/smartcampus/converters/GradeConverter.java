@@ -15,7 +15,7 @@ import org.mapstruct.Mapper;
  * @author theod
  */
 @Mapper(componentModel = "spring")
-public interface GradeConverter extends BaseConverter<GradeDto, Grade, GradeVo> {
+public abstract class GradeConverter implements BaseConverter<GradeDto, Grade, GradeVo> {
 
     /**
      * Convert a Data Transform Object to Plain Object.
@@ -24,7 +24,7 @@ public interface GradeConverter extends BaseConverter<GradeDto, Grade, GradeVo> 
      * @return Plain Object
      */
     @Override
-    Grade toPlain(GradeDto dto);
+    public abstract Grade toPlain(GradeDto dto);
 
     /**
      * Convert a Plain Object to View Object.
@@ -33,5 +33,5 @@ public interface GradeConverter extends BaseConverter<GradeDto, Grade, GradeVo> 
      * @return View Object
      */
     @Override
-    GradeVo toView(Grade po);
+    public abstract GradeVo toView(Grade po);
 }
