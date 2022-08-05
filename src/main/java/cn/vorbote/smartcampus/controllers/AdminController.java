@@ -51,23 +51,32 @@ public class AdminController {
         this.adminConverter = adminConverter;
     }
 
+    /**
+     * 管理员登录功能
+     */
     @PostMapping("/login")
-    public ResponseResult<AdminVo> login(HttpServletResponse response, @RequestBody AdminDto adminDto) throws Exception {
+    public ResponseResult<AdminVo> login(HttpServletResponse response,
+                                         @RequestBody AdminDto adminDto) throws Exception {
+        // 检查数据
         BizAssert.notNull(adminDto, "管理员信息不能为空！");
         BizAssert.hasText(adminDto.getName(), "管理员名称不能为空！");
         BizAssert.hasText(adminDto.getPassword(), "管理员密码不能为空！");
 
+        // 查找数据库
         var admin = adminService.getOne(Wrappers.<Admin>lambdaQuery()
                 .eq(Admin::getName, adminDto.getName())
                 .eq(Admin::getPassword, HashUtil.encrypt(Hash.MD5, adminDto.getPassword())));
         if (admin != null) {
+            // 生成令牌
             var token = accessKeyUtil.createTokenWithBean(
                     TimeSpan.builder().hours(1).build(),
                     "管理员", new String[]{admin.getId()},
                     admin);
 
+            // 写入响应头
             response.setHeader(HeaderConstants.TOKEN_KEY, token);
 
+            // 返回数据
             return ResponseResult.success(adminConverter.toView(admin), "登录成功！");
         } else {
             return ResponseResult.<AdminVo>error("用户名账户密码不匹配，请重新登录！")

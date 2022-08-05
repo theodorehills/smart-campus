@@ -7,18 +7,14 @@ import cn.vorbote.simplejwt.AccessKeyUtil;
 import cn.vorbote.smartcampus.constants.HeaderConstants;
 import cn.vorbote.smartcampus.pos.Admin;
 import cn.vorbote.web.model.ResponseResult;
-import cn.vorbote.web.utils.BizAssert;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.util.Date;
 
 /**
  * AdminInterceptor<br>
@@ -42,7 +38,9 @@ public class AdminInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+    public boolean preHandle(@NotNull HttpServletRequest request,
+                             @NotNull HttpServletResponse response,
+                             @NotNull Object handler)
             throws Exception {
 
         // 检查是否有令牌
