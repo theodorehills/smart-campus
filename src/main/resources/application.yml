@@ -1,1 +1,10 @@
+spring:
+  profiles:
+    # Due to the usage of public cloud database, the configuration file cannot be put here.
+    active: [db]
 
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath*:/mappers/**/*.xml
