@@ -14,6 +14,7 @@ import cn.vorbote.smartcampus.pos.Teacher;
 import cn.vorbote.smartcampus.services.IGradeService;
 import cn.vorbote.smartcampus.services.IKlasseService;
 import cn.vorbote.smartcampus.services.ITeacherService;
+import cn.vorbote.smartcampus.utils.GuidGenerator;
 import cn.vorbote.smartcampus.vos.GradeVo;
 import cn.vorbote.web.constants.WebStatus;
 import cn.vorbote.web.exceptions.BizException;
@@ -31,7 +32,7 @@ import java.util.Optional;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author vorbote
@@ -52,17 +53,21 @@ public class GradeController {
 
     private final GradeConverter gradeConverter;
 
+    private final GuidGenerator guidGenerator;
+
     @Autowired
     public GradeController(IGradeService gradeService,
                            ITeacherService teacherService,
                            IKlasseService klasseService,
                            GradeConverter gradeConverter,
-                           AccessKeyUtil accessKeyUtil) {
+                           AccessKeyUtil accessKeyUtil,
+                           GuidGenerator guidGenerator) {
         this.gradeService = gradeService;
         this.gradeConverter = gradeConverter;
         this.teacherService = teacherService;
         this.klasseService = klasseService;
         this.accessKeyUtil = accessKeyUtil;
+        this.guidGenerator = guidGenerator;
     }
 
     @GetMapping("/list")
@@ -91,14 +96,23 @@ public class GradeController {
         BizAssert.notNull(gradeDto, "年级信息不可以为空！");
         BizAssert.hasText(gradeDto.getName(), "年级名称不可以为空！");
 
+        Optional.ofNullable(gradeService.getOne(Wrappers.<Grade>lambdaQuery()
+                        .eq(Grade::getName, gradeDto.getName())))
+                .ifPresent((item) -> {
+                    throw new BizException(WebStatus.CONFLICT, "已存在该年级，请勿重复创建！");
+                });
+
         var cnt = teacherService.count(Wrappers.<Teacher>lambdaQuery()
                 .eq(Teacher::getId, gradeDto.getManager()));
         if (cnt == 0) {
             throw new BizException(WebStatus.PRECONDITION_FAILED, "绑定的教师不存在！");
         }
 
-        var flag = gradeService.save(gradeConverter.toPlain(gradeDto)
-                .setCreateBy(currentUser.getId()));
+        var flag = gradeService.save(
+                gradeConverter.toPlain(gradeDto)
+                        .setId(guidGenerator.nextGradeId())
+                        .setCreateBy(currentUser.getId())
+                        .setCreateAt(DateTime.now().unix()));
         if (flag) {
             return ResponseResult.success("新增年级成功！");
         } else {
@@ -121,7 +135,7 @@ public class GradeController {
         // 检查班级
         var klasseCount = klasseService.count(Wrappers.<Klasse>lambdaQuery()
                 .eq(Klasse::getGradeId, gradeId));
-        if (klasseCount == 0) {
+        if (klasseCount > 0) {
             throw new BizException(WebStatus.PRECONDITION_FAILED, "被删除年级绑定了多个班级，请先删除这些班级再进行操作！");
         }
 
