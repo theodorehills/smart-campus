@@ -60,12 +60,12 @@ public class AdminController {
                                          @RequestBody AdminDto adminDto) throws Exception {
         // 检查数据
         BizAssert.notNull(adminDto, "管理员信息不能为空！");
-        BizAssert.hasText(adminDto.getName(), "管理员名称不能为空！");
+        BizAssert.hasText(adminDto.getUsername(), "管理员名称不能为空！");
         BizAssert.hasText(adminDto.getPassword(), "管理员密码不能为空！");
 
         // 查找数据库
         var admin = adminService.getOne(Wrappers.<Admin>lambdaQuery()
-                .eq(Admin::getName, adminDto.getName())
+                .eq(Admin::getUsername, adminDto.getUsername())
                 .eq(Admin::getPassword, HashUtil.encrypt(Hash.MD5, adminDto.getPassword())));
         if (admin != null) {
             // 生成令牌
