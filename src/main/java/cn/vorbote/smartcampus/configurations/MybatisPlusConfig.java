@@ -32,21 +32,4 @@ public class MybatisPlusConfig {
         return mybatisPlusInterceptor;
     }
 
-
-    @Bean
-    public MetaObjectHandler metaObjectHandler() {
-        return new MetaObjectHandler() {
-            @Override
-            public void insertFill(MetaObject metaObject) {
-                this.setFieldValByName("createAt", DateTime.now().unix(), metaObject);
-                this.setFieldValByName("archived", 0, metaObject);
-            }
-
-            @Override
-            public void updateFill(MetaObject metaObject) {
-                this.setFieldValByName("updateAt", DateTime.now().unix(), metaObject);
-            }
-        };
-    }
-
 }
