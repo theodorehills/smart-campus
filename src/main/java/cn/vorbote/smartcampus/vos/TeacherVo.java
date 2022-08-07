@@ -25,6 +25,8 @@ public final class TeacherVo extends BaseVo implements Serializable {
 
     private String teacherNumber;
 
+    private String username;
+
     private String name;
 
     private Integer gender;
@@ -36,7 +38,5 @@ public final class TeacherVo extends BaseVo implements Serializable {
     private String address;
 
     private String avatar;
-
-    private String klasseName;
 
 }

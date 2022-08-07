@@ -31,10 +31,6 @@ public final class KlasseDto extends BaseDto implements Serializable {
 
     private String headmaster;
 
-    private String email;
-
-    private String telephone;
-
-    private String gradeName;
+    private String gradeId;
 
 }

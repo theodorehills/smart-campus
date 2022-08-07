@@ -23,6 +23,8 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public final class AdminVo extends BaseVo implements Serializable {
 
+    private String username;
+
     private String name;
 
     private Integer gender;

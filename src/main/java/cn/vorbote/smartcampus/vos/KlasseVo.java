@@ -31,10 +31,6 @@ public final class KlasseVo extends BaseVo implements Serializable {
 
     private String headmaster;
 
-    private String email;
-
-    private String telephone;
-
-    private String gradeName;
+    private String gradeId;
 
 }

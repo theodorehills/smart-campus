@@ -28,6 +28,8 @@ public final class Admin extends BasePo implements Serializable {
     @TableId
     private String id;
 
+    private String username;
+
     private String name;
 
     private Integer gender;

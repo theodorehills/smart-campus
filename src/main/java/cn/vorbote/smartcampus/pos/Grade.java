@@ -31,10 +31,6 @@ public final class Grade extends BasePo implements Serializable {
 
     private String manager;
 
-    private String email;
-
-    private String telephone;
-
     private String introduction;
 
 }

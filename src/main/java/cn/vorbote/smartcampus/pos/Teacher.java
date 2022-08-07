@@ -30,6 +30,8 @@ public final class Teacher extends BasePo implements Serializable {
 
     private String teacherNumber;
 
+    private String username;
+
     private String name;
 
     private Integer gender;
@@ -44,7 +46,5 @@ public final class Teacher extends BasePo implements Serializable {
     private String address;
 
     private String avatar;
-
-    private String klasseName;
 
 }

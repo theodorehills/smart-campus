@@ -23,6 +23,8 @@ public final class AdminDto extends BaseDto implements Serializable {
 
     private String id;
 
+    private String username;
+
     private String name;
 
     private Integer gender;

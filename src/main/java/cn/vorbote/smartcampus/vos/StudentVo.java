@@ -23,9 +23,9 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public final class StudentVo extends BaseVo implements Serializable {
 
-
-
     private String studentNumber;
+
+    private String username;
 
     private String name;
 
@@ -41,6 +41,6 @@ public final class StudentVo extends BaseVo implements Serializable {
 
     private String avatar;
 
-    private String klasseName;
+    private String klasseId;
 
 }

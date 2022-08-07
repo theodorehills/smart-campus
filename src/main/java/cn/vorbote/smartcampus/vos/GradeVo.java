@@ -28,10 +28,6 @@ public final class GradeVo extends BaseVo implements Serializable {
 
     private String manager;
 
-    private String email;
-
-    private String telephone;
-
     private String introduction;
 
 }

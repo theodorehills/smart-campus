@@ -25,6 +25,8 @@ public final class StudentDto extends BaseDto implements Serializable {
 
     private String studentNumber;
 
+    private String username;
+
     private String name;
 
     private Integer gender;
@@ -41,6 +43,6 @@ public final class StudentDto extends BaseDto implements Serializable {
 
     private String avatar;
 
-    private String klasseName;
+    private String klasseId;
 
 }

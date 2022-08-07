@@ -35,10 +35,6 @@ public final class Klasse extends BasePo implements Serializable {
 
     private String headmaster;
 
-    private String email;
-
-    private String telephone;
-
-    private String gradeName;
+    private String gradeId;
 
 }
