@@ -4,14 +4,8 @@ import cn.vorbote.core.constants.Hash;
 import cn.vorbote.core.utils.HashUtil;
 import cn.vorbote.core.utils.SnowFlake;
 import cn.vorbote.smartcampus.enums.Gender;
-import cn.vorbote.smartcampus.pos.Admin;
-import cn.vorbote.smartcampus.pos.Grade;
-import cn.vorbote.smartcampus.pos.Klasse;
-import cn.vorbote.smartcampus.pos.Teacher;
-import cn.vorbote.smartcampus.services.IAdminService;
-import cn.vorbote.smartcampus.services.IGradeService;
-import cn.vorbote.smartcampus.services.IKlasseService;
-import cn.vorbote.smartcampus.services.ITeacherService;
+import cn.vorbote.smartcampus.pos.*;
+import cn.vorbote.smartcampus.services.*;
 import cn.vorbote.smartcampus.utils.GuidGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @SpringBootTest
 class SmartCampusApplicationTests {
@@ -34,6 +29,9 @@ class SmartCampusApplicationTests {
 
     @Autowired
     private IGradeService gradeService;
+
+    @Autowired
+    private IStudentService studentService;
 
     @Autowired
     private GuidGenerator guidGenerator;
@@ -162,15 +160,147 @@ class SmartCampusApplicationTests {
         // endregion
 
         // region 班级生成
-        // Arrays.asList(
+        // var klassen = Arrays.asList(
         //         new Klasse()
-        //                 .setId("CLS" + snowFlake.nextId())
+        //                 .setId(guidGenerator.nextKlasseId())
         //                 .setName("2018软件工程一班")
         //                 .setNumber(30)
         //                 .setIntroduction("这是2018级软件工程一班")
-        //                 .setHeadmaster("")
-        //                 .setGradeId("GRA24402620042969088")
+        //                 .setHeadmaster("TEC24409474210988037")
+        //                 .setGradeId("GRA24402620042969088"),
+        //         new Klasse()
+        //                 .setId(guidGenerator.nextKlasseId())
+        //                 .setName("2018软件工程二班")
+        //                 .setNumber(30)
+        //                 .setIntroduction("这是2018级软件工程二班")
+        //                 .setHeadmaster("TEC24409474210988037")
+        //                 .setGradeId("GRA24402620042969088"),
+        //         new Klasse()
+        //                 .setId(guidGenerator.nextKlasseId())
+        //                 .setName("2019软件工程一班")
+        //                 .setNumber(32)
+        //                 .setIntroduction("这是2019级软件工程一班")
+        //                 .setHeadmaster("TEC24409474210988036")
+        //                 .setGradeId("GRA24402620047163392"),
+        //         new Klasse()
+        //                 .setId(guidGenerator.nextKlasseId())
+        //                 .setName("2019软件工程二班")
+        //                 .setNumber(34)
+        //                 .setIntroduction("这是2019级软件工程二班")
+        //                 .setHeadmaster("TEC24409474210988036")
+        //                 .setGradeId("GRA24402620047163392")
         // );
+        // klasseService.saveBatch(klassen);
+        // endregion
+
+        // region 学生生成
+        var students = Arrays.asList(
+                new Student()
+                        .setId(guidGenerator.nextStudentId())
+                        .setStudentNumber("201808010001")
+                        .setUsername("yanjipeng")
+                        .setName("颜纪鹏")
+                        .setGender(Gender.MALE.getCode())
+                        .setPassword(HashUtil.encrypt(Hash.MD5, "yanjipeng"))
+                        .setEmail("yanjipeng@example.org")
+                        .setTelephone("19322518618")
+                        .setAddress("云南省曲靖市沾益县温泉路664号")
+                        .setIntroduction("")
+                        .setAvatar(DEFAULT_AVATAR)
+                        .setKlasseId("CLS24411361383546880"),
+                new Student()
+                        .setId(guidGenerator.nextStudentId())
+                        .setStudentNumber("201808010002")
+                        .setUsername("wanglingyong")
+                        .setName("汪林勇")
+                        .setGender(Gender.MALE.getCode())
+                        .setPassword(HashUtil.encrypt(Hash.MD5, "wanglingyong"))
+                        .setEmail("wanglingyong@example.org")
+                        .setTelephone("18142828092")
+                        .setAddress("安徽省滁州市凤阳县华夏路719号")
+                        .setIntroduction("")
+                        .setAvatar(DEFAULT_AVATAR)
+                        .setKlasseId("CLS24411361383546880"),
+                new Student()
+                        .setId(guidGenerator.nextStudentId())
+                        .setStudentNumber("201808020001")
+                        .setUsername("renjianfei")
+                        .setName("任建飞")
+                        .setGender(Gender.MALE.getCode())
+                        .setPassword(HashUtil.encrypt(Hash.MD5, "renjianfei"))
+                        .setEmail("renjianfei@example.org")
+                        .setTelephone("15658172591")
+                        .setAddress("陕西省咸阳市泾阳县银泰路376号")
+                        .setIntroduction("")
+                        .setAvatar(DEFAULT_AVATAR)
+                        .setKlasseId("CLS24411361383546881"),
+                new Student()
+                        .setId(guidGenerator.nextStudentId())
+                        .setStudentNumber("201808020002")
+                        .setUsername("luguosong")
+                        .setName("卢国松")
+                        .setGender(Gender.MALE.getCode())
+                        .setPassword(HashUtil.encrypt(Hash.MD5, "luguosong"))
+                        .setEmail("luguosong@example.org")
+                        .setTelephone("19397492689")
+                        .setAddress("福建省福州市永泰县西小路951号")
+                        .setIntroduction("")
+                        .setAvatar(DEFAULT_AVATAR)
+                        .setKlasseId("CLS24411361383546881"),
+                new Student()
+                        .setId(guidGenerator.nextStudentId())
+                        .setStudentNumber("201908010001")
+                        .setUsername("chenwanhong")
+                        .setName("陈万洪")
+                        .setGender(Gender.MALE.getCode())
+                        .setPassword(HashUtil.encrypt(Hash.MD5, "chenwanhong"))
+                        .setEmail("chenwanhong@example.org")
+                        .setTelephone("17548300445")
+                        .setAddress("福建省福州市闽清县光明路643号")
+                        .setIntroduction("")
+                        .setAvatar(DEFAULT_AVATAR)
+                        .setKlasseId("CLS24411361383546882"),
+                new Student()
+                        .setId(guidGenerator.nextStudentId())
+                        .setStudentNumber("201908010002")
+                        .setUsername("weiyafang")
+                        .setName("魏雅芳")
+                        .setGender(Gender.MALE.getCode())
+                        .setPassword(HashUtil.encrypt(Hash.MD5, "weiyafang"))
+                        .setEmail("weiyafang@example.org")
+                        .setTelephone("16615784817")
+                        .setAddress("浙江省衢州市开化县文林路199号")
+                        .setIntroduction("")
+                        .setAvatar(DEFAULT_AVATAR)
+                        .setKlasseId("CLS24411361383546882"),
+                new Student()
+                        .setId(guidGenerator.nextStudentId())
+                        .setStudentNumber("201908020001")
+                        .setUsername("zhengxingguo")
+                        .setName("郑行国")
+                        .setGender(Gender.MALE.getCode())
+                        .setPassword(HashUtil.encrypt(Hash.MD5, "zhengxingguo"))
+                        .setEmail("zhengxingguo@example.org")
+                        .setTelephone("13483972624")
+                        .setAddress("湖北省荆门市京山县")
+                        .setIntroduction("")
+                        .setAvatar(DEFAULT_AVATAR)
+                        .setKlasseId("CLS24411361383546883"),
+                new Student()
+                        .setId(guidGenerator.nextStudentId())
+                        .setStudentNumber("201908020002")
+                        .setUsername("zhengtianji")
+                        .setName("郑天基")
+                        .setGender(Gender.MALE.getCode())
+                        .setPassword(HashUtil.encrypt(Hash.MD5, "zhengtianji"))
+                        .setEmail("zhengtianji@example.org")
+                        .setTelephone("13246206597")
+                        .setAddress("安徽省淮南市凤台县")
+                        .setIntroduction("")
+                        .setAvatar(DEFAULT_AVATAR)
+                        .setKlasseId("CLS24411361383546883")
+        );
+        studentService.saveBatch(students);
         // endregion
 
     }
