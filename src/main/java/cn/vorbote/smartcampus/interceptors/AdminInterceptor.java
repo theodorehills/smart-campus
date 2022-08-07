@@ -9,7 +9,7 @@ import cn.vorbote.smartcampus.pos.Admin;
 import cn.vorbote.web.model.ResponseResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jetbrains.annotations.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +22,7 @@ import java.io.PrintWriter;
  *
  * @author theod
  */
+@Slf4j
 public class AdminInterceptor implements HandlerInterceptor {
 
     private final AccessKeyUtil accessKeyUtil;
@@ -38,9 +39,7 @@ public class AdminInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(@NotNull HttpServletRequest request,
-                             @NotNull HttpServletResponse response,
-                             @NotNull Object handler)
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
 
         // 检查是否有令牌

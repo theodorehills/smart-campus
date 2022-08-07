@@ -31,12 +31,4 @@ public class GlobalExceptionHandler {
     public ResponseResult<?> handle(BizException ex) {
         return ex.respond();
     }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    public ResponseResult<?> handle(Exception ex) {
-        return ResponseResult.error("出现异常，请联系开发者！")
-                .code(WebStatus.INTERNAL_SERVER_ERROR);
-    }
-
 }

@@ -9,10 +9,8 @@ import lombok.Setter;
  *
  * @author theod
  */
-@Getter
-@Setter
 public sealed abstract class BaseVo permits AdminVo, GradeVo, KlasseVo, StudentVo, TeacherVo {
 
-    protected String id;
+
 
 }

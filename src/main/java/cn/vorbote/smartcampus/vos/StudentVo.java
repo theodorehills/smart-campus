@@ -23,6 +23,8 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public final class StudentVo extends BaseVo implements Serializable {
 
+    private String id;
+
     private String studentNumber;
 
     private String username;

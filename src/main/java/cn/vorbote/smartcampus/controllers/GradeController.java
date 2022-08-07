@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ import java.util.Optional;
  * @author vorbote
  * @since 2022-08-05
  */
+@Slf4j
 @RestController
 @RequestMapping(UriConstants.MODULE_GRADE)
 public class GradeController {
@@ -67,6 +69,7 @@ public class GradeController {
     public ResponseResult<IPage<GradeVo>> grades(@RequestParam(defaultValue = "1") Long pageIndex,
                                                  @RequestParam(defaultValue = "10") Long pageSize,
                                                  @RequestParam(required = false) String gradeName) {
+        log.info("executing list grades command, pageIndex = {}, pageSize = {}", pageIndex, pageSize);
         var wrapper = Wrappers.<Grade>lambdaQuery()
                 .like(Grade::getName, Optional.ofNullable(gradeName).orElse(""));
 
@@ -89,7 +92,7 @@ public class GradeController {
         BizAssert.hasText(gradeDto.getName(), "年级名称不可以为空！");
 
         var cnt = teacherService.count(Wrappers.<Teacher>lambdaQuery()
-                .eq(Teacher::getId, gradeDto.getId()));
+                .eq(Teacher::getId, gradeDto.getManager()));
         if (cnt == 0) {
             throw new BizException(WebStatus.PRECONDITION_FAILED, "绑定的教师不存在！");
         }

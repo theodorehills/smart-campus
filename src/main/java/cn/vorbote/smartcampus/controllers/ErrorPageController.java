@@ -34,6 +34,8 @@ public class ErrorPageController extends BasicErrorController {
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         var status = this.getStatus(request);
 
+        log.info("Error occurred, web status is {}", status.value());
+
         var result = new HashMap<String, Object>() {{
             put("code", status.value());
             put("message", ErrorStatus.byCode(status.value()).getLabel());
