@@ -1,6 +1,7 @@
 package cn.vorbote.smartcampus.pos;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -36,5 +37,16 @@ public final class Klasse extends BasePo implements Serializable {
     private String headmaster;
 
     private String gradeId;
+
+    private String createBy;
+
+    private Long createAt;
+
+    private String updateBy;
+
+    private Long updateAt;
+
+    @TableLogic
+    private Integer archived;
 
 }

@@ -26,7 +26,6 @@ public class MybatisPlusConfig {
             @Override
             public void insertFill(MetaObject metaObject) {
                 this.setFieldValByName("createAt", DateTime.now().unix(), metaObject);
-                this.setFieldValByName("createBy", "SYSTEM", metaObject);
                 this.setFieldValByName("archived", 0, metaObject);
             }
 

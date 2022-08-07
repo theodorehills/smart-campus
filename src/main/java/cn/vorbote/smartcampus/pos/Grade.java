@@ -1,6 +1,7 @@
 package cn.vorbote.smartcampus.pos;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -32,5 +33,16 @@ public final class Grade extends BasePo implements Serializable {
     private String manager;
 
     private String introduction;
+
+    private String createBy;
+
+    private Long createAt;
+
+    private String updateBy;
+
+    private Long updateAt;
+
+    @TableLogic
+    private Integer archived;
 
 }
