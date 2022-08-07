@@ -15,7 +15,7 @@ import java.util.Objects;
 public enum ArchiveStatus {
 
     NOT_ARCHIVED(0, "未删除"),
-    MALE(1, "已删除"),
+    ARCHIVED(1, "已删除"),
     UNKNOWN(10, "未知");
 
     private final int code;

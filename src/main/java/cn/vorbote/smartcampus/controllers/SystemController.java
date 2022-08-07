@@ -1,5 +1,6 @@
 package cn.vorbote.smartcampus.controllers;
 
+import cn.vorbote.smartcampus.constants.UriConstants;
 import cn.vorbote.web.model.ResponseResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author theod
  */
 @RestController
-@RequestMapping("/system")
+@RequestMapping(UriConstants.MODULE_SYSTEM)
 public class SystemController {
 
 }

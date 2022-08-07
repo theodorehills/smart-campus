@@ -5,6 +5,7 @@ import cn.vorbote.core.time.TimeSpan;
 import cn.vorbote.core.utils.HashUtil;
 import cn.vorbote.simplejwt.AccessKeyUtil;
 import cn.vorbote.smartcampus.constants.HeaderConstants;
+import cn.vorbote.smartcampus.constants.UriConstants;
 import cn.vorbote.smartcampus.converters.AdminConverter;
 import cn.vorbote.smartcampus.dtos.AdminDto;
 import cn.vorbote.smartcampus.enums.ErrorStatus;
@@ -33,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 2022-08-05
  */
 @RestController
-@RequestMapping("/admin")
+@RequestMapping(UriConstants.MODULE_ADMIN)
 public class AdminController {
 
     private final AccessKeyUtil accessKeyUtil;

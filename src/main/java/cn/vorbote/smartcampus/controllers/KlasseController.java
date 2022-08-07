@@ -1,5 +1,6 @@
 package cn.vorbote.smartcampus.controllers;
 
+import cn.vorbote.smartcampus.constants.UriConstants;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-08-05
  */
 @RestController
-@RequestMapping("/klasse")
+@RequestMapping(UriConstants.MODULE_KLASSE)
 public class KlasseController {
 
 }

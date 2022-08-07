@@ -1,28 +1,30 @@
 package cn.vorbote.smartcampus.controllers;
 
+import cn.vorbote.core.time.DateTime;
 import cn.vorbote.simplejwt.AccessKeyUtil;
 import cn.vorbote.smartcampus.constants.HeaderConstants;
+import cn.vorbote.smartcampus.constants.UriConstants;
 import cn.vorbote.smartcampus.converters.GradeConverter;
 import cn.vorbote.smartcampus.dtos.GradeDto;
+import cn.vorbote.smartcampus.enums.ArchiveStatus;
 import cn.vorbote.smartcampus.pos.Admin;
 import cn.vorbote.smartcampus.pos.Grade;
+import cn.vorbote.smartcampus.pos.Klasse;
 import cn.vorbote.smartcampus.pos.Teacher;
 import cn.vorbote.smartcampus.services.IGradeService;
+import cn.vorbote.smartcampus.services.IKlasseService;
 import cn.vorbote.smartcampus.services.ITeacherService;
-import cn.vorbote.smartcampus.services.impl.GradeServiceImpl;
-import cn.vorbote.smartcampus.services.impl.TeacherServiceImpl;
 import cn.vorbote.smartcampus.vos.GradeVo;
 import cn.vorbote.web.constants.WebStatus;
 import cn.vorbote.web.exceptions.BizException;
 import cn.vorbote.web.model.ResponseResult;
 import cn.vorbote.web.utils.BizAssert;
-import com.auth0.jwt.interfaces.Header;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 
 import java.util.Optional;
 
@@ -35,12 +37,14 @@ import java.util.Optional;
  * @since 2022-08-05
  */
 @RestController
-@RequestMapping("/grade")
+@RequestMapping(UriConstants.MODULE_GRADE)
 public class GradeController {
 
     private final IGradeService gradeService;
 
     private final ITeacherService teacherService;
+
+    private final IKlasseService klasseService;
 
     private final AccessKeyUtil accessKeyUtil;
 
@@ -49,11 +53,13 @@ public class GradeController {
     @Autowired
     public GradeController(IGradeService gradeService,
                            ITeacherService teacherService,
+                           IKlasseService klasseService,
                            GradeConverter gradeConverter,
                            AccessKeyUtil accessKeyUtil) {
         this.gradeService = gradeService;
         this.gradeConverter = gradeConverter;
         this.teacherService = teacherService;
+        this.klasseService = klasseService;
         this.accessKeyUtil = accessKeyUtil;
     }
 
@@ -74,7 +80,7 @@ public class GradeController {
         return result;
     }
 
-    @PostMapping("/new")
+    @PostMapping("/")
     public ResponseResult<?> create(@RequestHeader(HeaderConstants.TOKEN_KEY) String token,
                                     @RequestBody GradeDto gradeDto) throws Exception {
         var currentUser = accessKeyUtil.getBean(token, Admin.class);
@@ -94,6 +100,39 @@ public class GradeController {
             return ResponseResult.success("新增年级成功！");
         } else {
             return ResponseResult.error("新增年级失败！");
+        }
+    }
+
+    @DeleteMapping("/{gradeId}")
+    public ResponseResult<?> delete(@RequestHeader(HeaderConstants.TOKEN_KEY) String token,
+                                    @PathVariable String gradeId) throws Exception {
+        var currentUser = accessKeyUtil.getBean(token, Admin.class);
+
+        // 检查年级
+        var gradeCounts = gradeService.count(Wrappers.<Grade>lambdaQuery()
+                .eq(Grade::getId, gradeId));
+        if (gradeCounts == 0) {
+            throw new BizException(WebStatus.PRECONDITION_FAILED, "您需要删除的年级不存在！");
+        }
+
+        // 检查班级
+        var klasseCount = klasseService.count(Wrappers.<Klasse>lambdaQuery()
+                .eq(Klasse::getGradeId, gradeId));
+        if (klasseCount == 0) {
+            throw new BizException(WebStatus.PRECONDITION_FAILED, "被删除年级绑定了多个班级，请先删除这些班级再进行操作！");
+        }
+
+        var flag = gradeService.lambdaUpdate()
+                .set(Grade::getArchived, ArchiveStatus.ARCHIVED.getCode())
+                .set(Grade::getUpdateBy, currentUser.getId())
+                .set(Grade::getUpdateAt, DateTime.now().unix())
+                .eq(Grade::getId, gradeId)
+                .update();
+
+        if (flag) {
+            return ResponseResult.success("年级删除成功！");
+        } else {
+            return ResponseResult.error("年级删除失败！");
         }
     }
 
