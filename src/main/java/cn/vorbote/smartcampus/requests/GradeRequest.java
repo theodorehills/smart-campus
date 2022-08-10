@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author theod
  */
-public record DeleteGradeBatchRequest(
+public record GradeRequest(
         List<String> gradeIds) {
 
 }

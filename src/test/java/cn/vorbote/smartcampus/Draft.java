@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+
 /**
  * Draft<br>
  * Created at 8/7/2022 7:57 AM
@@ -21,7 +23,7 @@ public class Draft {
 
     @Test
     void ctxLoads() {
-        log.info("{}", String.valueOf(snowFlake.nextId()).length());
+
     }
 
 }

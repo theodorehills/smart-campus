@@ -23,7 +23,7 @@ public class MybatisPlusGenerator {
                 })
                 .packageConfig(builder -> {
                     builder.parent("cn.vorbote.smartcampus.pos")
-                            .pathInfo(Collections.singletonMap(OutputFile.xml, "D://")); // 设置mapperXml生成路径
+                            .pathInfo(Collections.singletonMap(OutputFile.mapperXml, "D://")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
                     builder.addTablePrefix("sc_"); // 设置过滤表前缀

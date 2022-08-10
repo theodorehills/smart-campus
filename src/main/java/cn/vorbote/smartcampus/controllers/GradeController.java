@@ -11,7 +11,7 @@ import cn.vorbote.smartcampus.pos.Admin;
 import cn.vorbote.smartcampus.pos.Grade;
 import cn.vorbote.smartcampus.pos.Klasse;
 import cn.vorbote.smartcampus.pos.Teacher;
-import cn.vorbote.smartcampus.requests.DeleteGradeBatchRequest;
+import cn.vorbote.smartcampus.requests.GradeRequest;
 import cn.vorbote.smartcampus.services.IGradeService;
 import cn.vorbote.smartcampus.services.IKlasseService;
 import cn.vorbote.smartcampus.services.ITeacherService;
@@ -155,10 +155,10 @@ public class GradeController {
 
     @DeleteMapping("/")
     public ResponseResult<?> deleteBatch(@RequestHeader(HeaderConstants.TOKEN_KEY) String token,
-                                         @RequestBody DeleteGradeBatchRequest gradeBatchRequest) throws Exception {
+                                         @RequestBody GradeRequest gradeRequest) throws Exception {
         var currentUser = accessKeyUtil.getBean(token, Admin.class);
 
-        var gradeIds = gradeBatchRequest.gradeIds();
+        var gradeIds = gradeRequest.gradeIds();
 
         var klassenCount = klasseService.count(Wrappers.<Klasse>lambdaQuery()
                 .in(Klasse::getGradeId, gradeIds));
