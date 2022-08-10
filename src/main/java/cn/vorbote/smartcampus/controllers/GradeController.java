@@ -192,6 +192,7 @@ public class GradeController {
         var flag = gradeService.lambdaUpdate()
                 .set(Grade::getUpdateBy, admin.getId())
                 .set(Grade::getUpdateAt, DateTime.now().unix())
+                .eq(Grade::getId, grade.getId())
                 .update(gradeConverter.toPlain(grade));
         if (flag) {
             return ResponseResult.success("年级修改成功！");
