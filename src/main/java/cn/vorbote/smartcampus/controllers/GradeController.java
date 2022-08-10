@@ -28,7 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Wrapper;
 import java.util.Optional;
 
 /**
@@ -179,6 +178,25 @@ public class GradeController {
         } else {
             return ResponseResult.success("删除失败！")
                     .code(WebStatus.NO_CONTENT);
+        }
+    }
+
+    @PutMapping("/")
+    public ResponseResult<?> updateGrade(@RequestHeader(HeaderConstants.TOKEN_KEY) String token,
+                                         @RequestBody GradeDto grade) throws Exception {
+        var admin = accessKeyUtil.getBean(token, Admin.class);
+
+        BizAssert.notNull(grade, "年级数据不能为空！");
+        BizAssert.hasText(grade.getId(), "年纪数据不能为空！");
+
+        var flag = gradeService.lambdaUpdate()
+                .set(Grade::getUpdateBy, admin.getId())
+                .set(Grade::getUpdateAt, DateTime.now().unix())
+                .update(gradeConverter.toPlain(grade));
+        if (flag) {
+            return ResponseResult.success("年级修改成功！");
+        } else {
+            return ResponseResult.error("年级修改失败！");
         }
     }
 
