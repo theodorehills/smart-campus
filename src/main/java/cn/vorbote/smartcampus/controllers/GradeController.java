@@ -201,5 +201,13 @@ public class GradeController {
         }
     }
 
+    @GetMapping("/{gradeId}")
+    public ResponseResult<GradeVo> getGrade(@PathVariable String gradeId) {
+        var grade = gradeService.getById(gradeId);
+        return ResponseResult.success(
+                        Optional.ofNullable(grade)
+                                .map(gradeConverter::toView).orElse(null), "查询成功！")
+                .code(grade == null ? WebStatus.NO_CONTENT : WebStatus.OK);
+    }
 
 }
