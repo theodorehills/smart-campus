@@ -11,6 +11,7 @@ import cn.vorbote.smartcampus.pos.Admin;
 import cn.vorbote.smartcampus.pos.Grade;
 import cn.vorbote.smartcampus.pos.Klasse;
 import cn.vorbote.smartcampus.pos.Teacher;
+import cn.vorbote.smartcampus.requests.DeleteGradeBatchRequest;
 import cn.vorbote.smartcampus.services.IGradeService;
 import cn.vorbote.smartcampus.services.IKlasseService;
 import cn.vorbote.smartcampus.services.ITeacherService;
@@ -22,12 +23,12 @@ import cn.vorbote.web.model.ResponseResult;
 import cn.vorbote.web.utils.BizAssert;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Wrapper;
 import java.util.Optional;
 
 /**
@@ -150,6 +151,34 @@ public class GradeController {
             return ResponseResult.success("年级删除成功！");
         } else {
             return ResponseResult.error("年级删除失败！");
+        }
+    }
+
+    @DeleteMapping("/")
+    public ResponseResult<?> deleteBatch(@RequestHeader(HeaderConstants.TOKEN_KEY) String token,
+                                         @RequestBody DeleteGradeBatchRequest gradeBatchRequest) throws Exception {
+        var currentUser = accessKeyUtil.getBean(token, Admin.class);
+
+        var gradeIds = gradeBatchRequest.gradeIds();
+
+        var klassenCount = klasseService.count(Wrappers.<Klasse>lambdaQuery()
+                .in(Klasse::getGradeId, gradeIds));
+        if (klassenCount >= 0) {
+            return ResponseResult.error("这些年级仍然绑定有班级，无法删除")
+                    .code(WebStatus.PRECONDITION_FAILED);
+        }
+
+        var flag = gradeService.lambdaUpdate()
+                .set(Grade::getArchived, ArchiveStatus.ARCHIVED.getCode())
+                .set(Grade::getUpdateAt, DateTime.now().unix())
+                .set(Grade::getUpdateBy, currentUser.getId())
+                .in(Grade::getId, gradeIds)
+                .update();
+        if (flag) {
+            return ResponseResult.success("删除成功！");
+        } else {
+            return ResponseResult.success("删除失败！")
+                    .code(WebStatus.NO_CONTENT);
         }
     }
 

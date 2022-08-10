@@ -1,5 +1,7 @@
 package cn.vorbote.smartcampus.constants;
 
+import cn.vorbote.smartcampus.enums.Modules;
+
 /**
  * UriConstants<br>
  * Created at 8/7/2022 4:49 PM
@@ -17,6 +19,10 @@ public final class UriConstants {
     public static final String MODULE_STUDENT = "/student";
     public static final String MODULE_TEACHER = "/teacher";
     public static final String MODULE_SYSTEM = "/system";
+
+    public static String getPattern(Modules module) {
+        return module.getPattern();
+    }
 
 
 }
