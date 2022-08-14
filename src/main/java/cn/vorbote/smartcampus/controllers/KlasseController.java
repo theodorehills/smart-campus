@@ -95,15 +95,13 @@ public class KlasseController {
         BizAssert.isTrue(klasseDto.getNumber() > 0, "班级人数错误！");
 
         // 检测年级是否存在
-        if (gradeService.count(Wrappers.<Grade>lambdaQuery()
-                .eq(Grade::getId, klasseDto.getGradeId())) == 0) {
+        if (gradeService.isGradeExistById(klasseDto.getGradeId())) {
             return ResponseResult.error("班级所绑定的年级不存在，请重新创建！")
                     .code(WebStatus.PRECONDITION_FAILED);
         }
 
         // 检测班级名称是否重复
-        if (klasseService.count(Wrappers.<Klasse>lambdaQuery()
-                .eq(Klasse::getName, klasseDto.getName())) == 0) {
+        if (klasseService.isKlasseNameAvailable(klasseDto.getName())) {
             return ResponseResult.error("班级名称重复！无法创建！")
                     .code(WebStatus.CONFLICT);
         }
@@ -119,6 +117,33 @@ public class KlasseController {
         }
     }
 
-    // public
+    @PutMapping("/")
+    public ResponseResult<?> updateKlasse(@RequestHeader(HeaderConstants.TOKEN_KEY) String token,
+                                          @RequestBody KlasseDto klasseDto) throws Exception {
+        var admin = accessKeyUtil.getBean(token, Admin.class);
+
+        BizAssert.notNull(klasseDto, "班级数据不能为空！");
+        BizAssert.hasText(klasseDto.getId(), "班级不能为空！");
+
+        if (StringUtil.hasText(klasseDto.getGradeId())) {
+            if (gradeService.isGradeExistById(klasseDto.getGradeId())) {
+                return ResponseResult.error("班级所绑定的年级不存在，请重新创建！")
+                        .code(WebStatus.PRECONDITION_FAILED);
+            }
+        }
+
+        var flag = klasseService.lambdaUpdate()
+                .set(Klasse::getUpdateBy, admin.getId())
+                .set(Klasse::getUpdateAt, DateTime.now().unix())
+                .eq(Klasse::getId, klasseDto.getId())
+                .update(klasseConverter.toPlain(klasseDto));
+        if (flag) {
+            return ResponseResult.success("修改成功！");
+        } else {
+            return ResponseResult.error("修改失败！");
+        }
+    }
+
+
 
 }

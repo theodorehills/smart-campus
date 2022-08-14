@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IGradeService extends IService<Grade> {
 
+    public boolean isGradeExistById(String gradeId);
+
 }

@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IKlasseService extends IService<Klasse> {
 
+    public boolean isKlasseNameAvailable(String klasseName);
+
 }
